@@ -10,4 +10,4 @@ const TaskType = new GraphQLObjectType({
     }
 });
 
-module.exports = schema;
+module.exports = TaskType;
