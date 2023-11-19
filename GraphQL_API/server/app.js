@@ -5,7 +5,7 @@ const TaskType = require('./schema/schema.js');
 const app = express();
 
 app.use('/graphql', graphqlHTTP({
-  schema,
+  TaskType: TaskType,
   graphiql: true
 }));
 
