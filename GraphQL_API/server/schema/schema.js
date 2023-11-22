@@ -52,7 +52,6 @@ const RootQuery = new GraphQLObjectType({
       type: TaskType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        // Use lodash to find the task by id
         return _.find(tasks, { id: args.id });
       },
     },
