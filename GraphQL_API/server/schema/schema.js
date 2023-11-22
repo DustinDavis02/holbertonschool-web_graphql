@@ -45,36 +45,76 @@ const ProjectType = new GraphQLObjectType({
   }),
 });
 
-const RootQuery = new GraphQLObjectType({
-  name: 'RootQueryType',
-  fields: {
-    task: {
-      type: TaskType,
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        return _.find(tasks, { id: args.id });
+  const RootQuery = new GraphQLObjectType({
+    name: 'RootQueryType',
+    fields: {
+      task: {
+        type: TaskType,
+        args: { id: { type: GraphQLID } },
+        resolve(parent, args) {
+          return _.find(tasks, { id: args.id });
+        },
       },
-    },
-    project: {
-      type: ProjectType,
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        return _.find(projects, { id: args.id });
+      project: {
+        type: ProjectType,
+        args: { id: { type: GraphQLID } },
+        resolve(parent, args) {
+          return _.find(projects, { id: args.id });
+        },
       },
-    },
-    tasks: {
-      type: new GraphQLList(TaskType),
-      resolve(parent, args) {
-        return tasks;
+      tasks: {
+        type: new GraphQLList(TaskType),
+        resolve(parent, args) {
+          return tasks;
+        },
       },
-    },
-    projects: {
-      type: new GraphQLList(ProjectType),
-      resolve(parent, args) {
-        return projects;
+      projects: {
+        type: new GraphQLList(ProjectType),
+        resolve(parent, args) {
+          return projects;
+        },
       },
-    },
-  },
+    }
+  });
+
+  const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+      addProject: {
+        type: ProjectType,
+        args: {
+          title: { type: new GraphQLNonNull(GraphQLString) },
+          weight: { type: new GraphQLNonNull(GraphQLInt) },
+          description: { type: new GraphQLNonNull(GraphQLString) }
+        },
+        resolve(parent, args) {
+          let project = new Project({
+            title: args.title,
+            weight: args.weight,
+            description: args.description
+          });
+          return project.save();
+        }
+      },
+      addTask: {
+        type: TaskType,
+        args: {
+          title: { type: new GraphQLNonNull(GraphQLString) },
+          weight: { type: new GraphQLNonNull(GraphQLInt) },
+          description: { type: new GraphQLNonNull(GraphQLString) },
+          projectId: { type: new GraphQLNonNull(GraphQLID) }
+        },
+        resolve(parent, args) {
+          let task = new Task({
+            title: args.title,
+            weight: args.weight,
+            description: args.description,
+            projectId: args.projectId
+          });
+          return task.save();
+        }
+      }
+  }
 });
 
 module.exports = new GraphQLSchema({ query: RootQuery });
