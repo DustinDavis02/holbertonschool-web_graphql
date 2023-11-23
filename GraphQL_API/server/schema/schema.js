@@ -1,4 +1,4 @@
-const {GraphQLObjectType,GraphQLString,GraphQLInt,GraphQLSchema,GraphQLID,GraphQLList} = require("graphql");
+const {GraphQLObjectType,GraphQLString,GraphQLInt,GraphQLSchema,GraphQLID,GraphQLList, GraphQLNonNull} = require("graphql");
 const Project = require('../models/project');
 const Task = require('../models/task');
 const _ = require('lodash');
